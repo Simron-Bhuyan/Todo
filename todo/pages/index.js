@@ -2,6 +2,7 @@ import WrongNetworkMessage from '../components/WrongNetworkMessage'
 import ConnectWalletButton from '../components/ConnectWalletButton'
 import TodoList from '../components/TodoList'
 
+
 /* 
 const tasks = [
   { id: 0, taskText: 'clean', isDeleted: false }, 
