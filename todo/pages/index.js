@@ -5,6 +5,7 @@ import { TaskContractAddress } from '../config'
 import TaskAbi from '../../backend/build/contracts/ToDoTaskContract.json'
 import { ethers } from 'ethers'
 import { useState } from 'react'
+import { useEffect } from 'react'
 /* 
 const tasks = [
   { id: 0, taskText: 'clean', isDeleted: false }, 
@@ -19,7 +20,10 @@ export default function Home() {
   const [currentAcct, setCurrentAcct] = useState('')
   const [textInput, setTextInput] = useState('')
   const [tasks, setTasks] = useState([])
-
+useEffect(()=>{
+connectWallet();
+getAllTasks();
+},[])
   // Calls Metamask to connect wallet on clicking Connect Wallet button
   const connectWallet = async () => {
     try {
@@ -51,7 +55,21 @@ export default function Home() {
 
   // Just gets all the tasks from the contract
   const getAllTasks = async () => {
+   try{
+    const { ethereum } = window
+    if (ethereum) {
+      const provider = new ethers.providers.Web3Provider(ethereum)
+      const signer = provider.getSigner()
+      const ToDoTaskContract = new ethers.Contract(TaskContractAddress, TaskAbi.abi,signer)
+      let allTasks=await ToDoTaskContract.getMyTodos()
+      setTasks(allTasks)
+    }else{
+      console.log('Ethereum obj does not exist')
+    }
    
+   }catch(error){
+    console.log(error)
+   }
   }
 
   // Add tasks from front-end onto the blockchain
@@ -64,10 +82,9 @@ export default function Home() {
     try {
       const { ethereum } = window
       if (ethereum) {
-
         const provider = new ethers.providers.Web3Provider(ethereum)
         const signer = provider.getSigner()
-        const ToDoTaskContract = new ethers.Contract(TaskContractAddress, TaskAbi.abi.signer)
+        const ToDoTaskContract = new ethers.Contract(TaskContractAddress, TaskAbi.abi,signer)
         ToDoTaskContract.addTask(task.taskText, task.isDeleted).then(res => {
           setTasks([...tasks, task.taskText])
           console.log('Added task')
@@ -78,17 +95,32 @@ export default function Home() {
     } catch (error) {
       console.log(error)
     }
+    setTaskInput('')
   }
 
   // Remove tasks from front-end by filtering it out on our "back-end" / blockchain smart contract filtering doesn't mean deleting the todos
   const deleteTask = key => async () => {
-
+try{
+  if (ethereum) {
+    const provider = new ethers.providers.Web3Provider(ethereum)
+    const signer = provider.getSigner()
+    const ToDoTaskContract = new ethers.Contract(TaskContractAddress, TaskAbi.abi,signer)
+    const deleteTaskTnx=await ToDoTaskContract.deleteTask(key,true)
+    console.log('Task successfully deleted ',deleteTaskTnx)
+    let allTasks = await ToDoTaskContract.getMyTodos()
+    setTasks(allTasks)
+  }else{
+    console.log('Ethereum does not exist .\n Nothing to delete...')
+  }
+}catch(err){
+console.log(err)
+}
   }
 
   return (
     <div className='bg-gradient-to-r from-cyan-500 to-blue-500 h-screen w-screen flex justify-center py-4'>
       {! isLoggedin ? <ConnectWalletButton connectWallet={connectWallet} /> :
-        correctNetwork ? <TodoList textInput={textInput} setTextInput={setTextInput} addTask={addTask} /> : <WrongNetworkMessage />}
+        correctNetwork ? <TodoList tasks={tasks} textInput={textInput} setTextInput={setTextInput} addTask={addTask} deleteTask={deleteTask} /> : <WrongNetworkMessage />}
     </div>
   )
 }

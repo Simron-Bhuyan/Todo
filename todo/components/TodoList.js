@@ -1,8 +1,9 @@
 import Head from 'next/head'
 import Navbar from './Navbar'
 import { IoMdAddCircle } from 'react-icons/io'
+import Task from './Task'
 
-const TodoList = ({textInput,setTextInput,addTask}) => <div id="mainContent" className='w-[80%] bg-gradient-to-l from-cyan-600 to-blue-800 py-4 px-9 rounded-[30px] overflow-y-scroll'>
+const TodoList = ({tasks,textInput,setTextInput,addTask,deleteTask}) => <div id="mainContent" className='w-[80%] bg-gradient-to-l from-cyan-600 to-blue-800 py-4 px-9 rounded-[30px] overflow-y-scroll'>
 <Head>
     <title>My ToDo List</title>
     <meta name="keywords" content="web development ,programming"/>
@@ -25,7 +26,14 @@ const TodoList = ({textInput,setTextInput,addTask}) => <div id="mainContent" cla
     />
   </form>
   <ul>
-    {/* Loop through all tasks here using the Task component */}
+    {/* Looping through all tasks here using the Task component */}
+    {tasks.map(item=>(
+      <Task 
+      key={item.id}
+      taskText={item.taskText}
+     onClick={deleteTask(item.id)}//onClick
+      />
+    ))}
   </ul>
 </div>
 
