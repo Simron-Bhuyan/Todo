@@ -10,7 +10,7 @@ contract ToDoTaskContract {
         bool isDeleted;
     }
     Task[] private tasks;
-    mapping(uint256 => address)taskToOwner; // key=>address inner join for joining and getting only the owers tasks and not someone else {0: take walk}vs{0:'0x.....'}
+    mapping(uint256 => address) taskToOwner; // key=>address inner join for joining and getting only the owers tasks and not someone else {0: take walk}vs{0:'0x.....'}
 
     function addTask(string memory taskText, bool isDeleted) external {
         uint taskId = tasks.length;

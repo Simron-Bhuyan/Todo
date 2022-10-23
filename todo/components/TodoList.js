@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Navbar from './Navbar'
 import { IoMdAddCircle } from 'react-icons/io'
 
-const TodoList = () => <div id="mainContent" className='w-[80%] bg-gradient-to-l from-cyan-600 to-blue-800 py-4 px-9 rounded-[30px] overflow-y-scroll'>
+const TodoList = ({textInput,setTextInput,addTask}) => <div id="mainContent" className='w-[80%] bg-gradient-to-l from-cyan-600 to-blue-800 py-4 px-9 rounded-[30px] overflow-y-scroll'>
 <Head>
     <title>My ToDo List</title>
     <meta name="keywords" content="web development ,programming"/>
@@ -16,10 +16,11 @@ const TodoList = () => <div id="mainContent" className='w-[80%] bg-gradient-to-l
     <input
       className='rounded-[10px] w-full p-[10px] border-none outline-none bg-[#031956] text-white mb-[10px]'
       placeholder='Add a task for today...'
-      // take input from the form here
+      value={textInput}// take input from the form here
+      onChange={e => setTextInput(e.target.value)}
     />
     <IoMdAddCircle
-      // Add an onClick method
+      onClick={addTask}// OnClick method
       className='text-[#031956] text-[50px] cursor-pointer ml-[20px] mb-[10px]'
     />
   </form>
