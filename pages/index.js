@@ -2,7 +2,7 @@ import WrongNetworkMessage from '../components/WrongNetworkMessage';
 import ConnectWalletButton from '../components/ConnectWalletButton';
 import TodoList from '../components/TodoList';
 import { TaskContractAddress } from '../config';
-import TaskAbi from '../../backend/build/contracts/ToDoTaskContract.json';
+import TaskAbi from '../backend/build/contracts/ToDoTaskContract.json';
 import { ethers } from 'ethers';
 import { useState, useEffect } from 'react';
 
