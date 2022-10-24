@@ -9,8 +9,8 @@
   <li>npm start    or       npm run dev</li>
  </ul>
  <h2>Visit: https://scode-mytodo.vercel.app/   
-<b/>
-  Must have metamask extension
+<br/>
+  Must have metamask extension in your browser
 </h2>
  
  
